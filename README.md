@@ -59,8 +59,6 @@ Para a aplicação dos estilos, serão criadas classes no arquivo da página, pa
 
 O CSS Global é utilizado quando você deseja aplicar estilos em toda a aplicação, sem restrições de escopo.
 
-https://github.com/mtalala/react/blob/main/imagens/image4.png![image](https://github.com/user-attachments/assets/4cdff612-4510-4a69-ad90-7bc4ad6b4e20)
-
 No Next.js, o CSS global será importado no arquivo layout.js. Isso assegura que os estilos globais sejam carregados e aplicados em todas as páginas da aplicação.
 
 ### CSS Module:
