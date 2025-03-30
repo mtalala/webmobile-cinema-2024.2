@@ -1,12 +1,28 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light Mode */
+  --background: #f0f0f0;
+  --foreground: #1a1a24;
+  --text-muted: #888;
+  --button-bg: #d32f2f;
+  --button-text: #f0f0f0;
+  --seat-available: #bababa;
+  --seat-selected: #d32f2f;
+  --seat-unavailable: #1A1A24;
+  --screen-bg: #bababa;
+  --confirmation-bg: #4caf50;
+  --confirmation-text: white;
+
+  /* Dark Mode */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #070710;
-    --foreground: #ededed;
+    --background: #1a1a24;
+    --foreground: #f0f0f0;
+    --text-muted: #aaaaaa;
+    --seat-available: #f0f0f0;
+    --seat-unavailable: #505050;
+    --screen-bg: #505050;
   }
 }
 
@@ -22,6 +38,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 * {
@@ -40,41 +60,3 @@ a {
     color-scheme: dark;
   }
 }
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-  
-  .assento {
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  cursor: pointer;
-  }
-  
-  .assento.livre {
-  background-color: #f4f4f4;
-  }
-  
-  .assento.selecionado {
-  background-color: #d32f2f;
-  }
-  
-  .assento.indisponivel {
-  background-color: #555;
-  cursor: not-allowed;
-  }
-
-  h3 {
-    font-size: 18px;
-    text-align: left;
-    margin-top: 20pt;
-  }
-
-  h1 {
-    padding:0;
-    margin-top:0pt;
-  }

@@ -1,117 +1,116 @@
 "use client";
 
 import styles from "./page.module.css";
+import "./globals.css";
 import { useState, useEffect } from 'react';
 
 export default function Home() {
-  const [dados, setDados] = useState(null);
-  const [assentosSelecionados, setAssentosSelecionados] = useState([]);
-  const [compraConfirmada, setCompraConfirmada] = useState(false);
+  const [data, setData] = useState(null);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [purchaseConfirmed, setPurchaseConfirmed] = useState(false);
 
   useEffect(() => {
-    fetch('/dados.json')
+    fetch('/data.json')
       .then((res) => res.json())
-      .then((data) => setDados(data));
+      .then((data) => setData(data));
   }, []);
 
-  if (!dados) return <div>Carregando...</div>;
+  if (!data) return <div>Loading...</div>;
 
-  const selecionarAssento = (numero) => {
-    setAssentosSelecionados((prev) =>
-      prev.includes(numero)
-        ? prev.filter((n) => n !== numero)
-        : [...prev, numero]
+  const selectSeat = (number) => {
+    setSelectedSeats((prev) =>
+      prev.includes(number)
+        ? prev.filter((n) => n !== number)
+        : [...prev, number]
     );
   };
 
-  const calcularPrecoTotal = () => {
-    return assentosSelecionados.length * dados.preco;
+  const calculateTotalPrice = () => {
+    return selectedSeats.length * data.price;
   };
 
-  const confirmarCompra = () => {
-    
-    const novosAssentos = dados.assentos.map((assento) =>
-      assentosSelecionados.includes(assento.numero)
-        ? { ...assento, disponivel: false }
-        : assento
+  const confirmPurchase = () => {
+    const updatedSeats = data.seats.map((seat) =>
+      selectedSeats.includes(seat.number)
+        ? { ...seat, available: false }
+        : seat
     );
 
-    setDados({ ...dados, assentos: novosAssentos });
-    setAssentosSelecionados([]); 
-    setCompraConfirmada(true);
+    setData({ ...data, seats: updatedSeats });
+    setSelectedSeats([]); 
+    setPurchaseConfirmed(true);
 
-    setTimeout(() => setCompraConfirmada(false), 3000);
+    setTimeout(() => setPurchaseConfirmed(false), 3000);
   };
 
   return (
-    <div>
-      <div className={styles.container}>
+    <div className={styles.container}>
 
-        <h1>{dados.titulo}</h1>
-        <p className={styles.horario}>{dados.horario}</p>
+      <h1>{data.title}</h1>
+      <p className={styles.schedule}>{data.schedule}</p>
 
-        <div className={styles.blocos}>
+      <div className={styles.layout}>
 
-          <div className={styles.cadeiras}>
+        <div className={styles.seating}>
 
-            <div className={styles.assentos}>
-              {dados.assentos.map((assento) => (
-                <div
-                  key={assento.numero}
-                  className={`assento ${
-                    assento.disponivel ? (assentosSelecionados.includes(assento.numero) ? 'selecionado' : 'livre') : 'indisponivel'
-                  }`}
-                  onClick={() => assento.disponivel && selecionarAssento(assento.numero)}
-                ></div>
-              ))}
-            </div>
-            <div className={styles.disp}>
-
-              <p className={styles.pdisp}>tela</p>
-              <div className={styles.divtela}></div>
-
-              <div className={styles.balldisp}>
-
-                <div className={styles.bolalivre}></div>
-                <p className={styles.pdisp}>livre</p>
-                <div className={styles.bolaselec}></div>
-                <p className={styles.pdisp}>selecionado</p>
-                <div className={styles.bolaindisp}></div>
-                <p className={styles.pdisp}>indisponivel</p>
-
-              </div>
-            </div>
-            
+          <div className={styles.seats}>
+            {data.seats.map((seat) => (
+              <div
+                key={seat.number}
+                className={`${styles.seat} ${
+                  seat.available ? (selectedSeats.includes(seat.number) ? styles.selected : styles.available) : styles.unavailable
+                }`}
+                onClick={() => seat.available && selectSeat(seat.number)}
+                aria-label={`Seat ${seat.number} ${seat.available ? "available" : "unavailable"}`}
+              ></div>
+            ))}
           </div>
 
-          <div className={styles.informac}>
-            <h3>Sinopse do filme:</h3>
-            <p className={styles.sinopse}>{dados.sinopse}</p>
-            <h3>Data de lançamento:</h3>
-            <p className={styles.dataLancamento}>{dados.dataLancamento}</p>
-            <h3>Direção:</h3>
-            <p className={styles.direcao}>{dados.direcao}</p>
-          </div>
+          <div className={styles.screenInfo}>
 
+            <p className={styles.screenLabel}>Screen</p>
+            <div className={styles.screen}></div>
+
+            <div className={styles.statusIcons}>
+              <div className={styles.availableIcon}></div>
+              <p className={styles.statusLabel}>Available</p>
+              <div className={styles.selectedIcon}></div>
+              <p className={styles.statusLabel}>Selected</p>
+              <div className={styles.unavailableIcon}></div>
+              <p className={styles.statusLabel}>Unavailable</p>
+            </div>
+
+          </div>
+          
         </div>
 
-        <div className={styles.preco}>
-          <button
-            className={styles.botaoComprar}
-            onClick={confirmarCompra} 
-            disabled={assentosSelecionados.length === 0} 
-          >
-            Comprar <br /> R$ {calcularPrecoTotal().toFixed(2)}
-          </button>
+        <div className={styles.movieDetails}>
+          <h3>Movie Synopsis:</h3>
+          <p className={styles.synopsis}>{data.synopsis}</p>
+          <h3>Release Date:</h3>
+          <p className={styles.releaseDate}>{data.releaseDate}</p>
+          <h3>Director:</h3>
+          <p className={styles.director}>{data.director}</p>
         </div>
-
-        {compraConfirmada && (
-          <div className={styles.confirmacao}>
-            <p>Compra confirmada!</p>
-          </div>
-        )}
 
       </div>
+
+      <div className={styles.priceSection}>
+        <button
+          className={styles.purchaseButton}
+          onClick={confirmPurchase} 
+          disabled={selectedSeats.length === 0} 
+        >
+          Buy <br /> $ {calculateTotalPrice().toFixed(2)}
+        </button>
+      </div>
+
+      {purchaseConfirmed && (
+        <div className={styles.confirmation}>
+          <p>Purchase confirmed!</p>
+        </div>
+      )}
+
     </div>
   );
 }
