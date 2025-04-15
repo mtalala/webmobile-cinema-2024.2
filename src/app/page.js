@@ -47,7 +47,7 @@ export default function Home() {
     <div className={styles.container}>
 
       <h1>{data.title}</h1>
-      <p className={styles.schedule}>{data.schedule}</p>
+      <p className={styles.showtime}>{data.showtime}</p>
 
       <div className={styles.layout}>
 
